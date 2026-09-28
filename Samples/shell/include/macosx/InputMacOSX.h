@@ -1,0 +1,62 @@
+/*
+ * This source file is part of libRocket, the HTML/CSS Interface Middleware
+ *
+ * For the latest information, see http://www.librocket.com
+ *
+ * Copyright (c) 2008-2010 CodePoint Ltd, Shift Technology Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
+
+#ifndef INPUTMACOSX_H
+#define INPUTMACOSX_H
+
+#include "Input.h"
+
+/**
+	Input Wrapper Code
+	Feel free to take this class and integrate it with your project.
+
+	Cocoa/AppKit specific event handling (ShellMacOSX.cpp, an Objective-C++
+	file) translates NSEvents into these platform-independent calls, so this
+	header stays plain C++ and can be included from non-Objective-C++ code.
+	@author Lloyd Weehuizen
+ */
+
+class InputMacOSX : public Input
+{
+public:
+	static bool Initialise();
+	static void Shutdown();
+
+	/// Converts an AppKit NSEventModifierFlags bitmask into Rocket's key modifier state.
+	static int GetKeyModifierState(unsigned long ns_modifier_flags);
+
+	/// Handlers for translated AppKit events; ns_modifier_flags is the raw NSEventModifierFlags value.
+	static void ProcessMouseButtonDown(int button, unsigned long ns_modifier_flags);
+	static void ProcessMouseButtonUp(int button, unsigned long ns_modifier_flags);
+	static void ProcessMouseMove(int x, int y, unsigned long ns_modifier_flags);
+	static void ProcessMouseWheel(float delta, unsigned long ns_modifier_flags);
+	/// key_code is the raw NSEvent virtual keyCode (same numbering as the classic Mac OS virtual keycodes).
+	static void ProcessKeyDown(unsigned short key_code, unsigned long ns_modifier_flags);
+	static void ProcessKeyUp(unsigned short key_code, unsigned long ns_modifier_flags);
+};
+
+#endif
